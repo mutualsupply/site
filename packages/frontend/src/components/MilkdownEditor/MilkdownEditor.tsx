@@ -2,9 +2,11 @@ import {
 	CmdKey,
 	Editor,
 	defaultValueCtx,
+	editorViewCtx,
 	editorViewOptionsCtx,
 	rootCtx,
 } from "@milkdown/core";
+import { Ctx } from "@milkdown/ctx";
 import { clipboard } from "@milkdown/plugin-clipboard";
 import { cursor } from "@milkdown/plugin-cursor";
 import { emoji } from "@milkdown/plugin-emoji";
@@ -16,9 +18,11 @@ import {
 } from "@milkdown/plugin-history";
 import { indent } from "@milkdown/plugin-indent";
 import { listener, listenerCtx } from "@milkdown/plugin-listener";
+import { TooltipProvider, tooltipFactory } from "@milkdown/plugin-tooltip";
 import { Uploader, upload, uploadConfig } from "@milkdown/plugin-upload";
 import {
 	commonmark,
+	linkSchema,
 	toggleEmphasisCommand,
 	toggleStrongCommand,
 	wrapInBlockquoteCommand,
@@ -27,6 +31,8 @@ import {
 	wrapInOrderedListCommand,
 } from "@milkdown/preset-commonmark";
 import { Node, Schema } from "@milkdown/prose/model";
+import { EditorState } from "@milkdown/prose/state";
+import { EditorView } from "@milkdown/prose/view";
 import { Milkdown, MilkdownProvider, useEditor } from "@milkdown/react";
 import { nord } from "@milkdown/theme-nord";
 import { callCommand, replaceAll } from "@milkdown/utils";
@@ -39,6 +45,8 @@ import { cn } from "utils";
 import env from "../../lib/env";
 import { Button } from "../ui/button";
 import { placeholderCtx, placeholder as placeholderPlugin } from "./plugins";
+
+const linkTooltip = tooltipFactory("editor-tooltip");
 
 interface MilkdownEditorProps {
 	onChange?: (value: string) => void;
@@ -75,6 +83,47 @@ const uploader: Uploader = async (files: FileList, schema: Schema) => {
 
 	return nodes;
 };
+
+function tooltipPluginView(ctx: Ctx) {
+	return (_view: EditorView) => {
+		const content = document.createElement("div");
+		const provider = new TooltipProvider({
+			content,
+			shouldShow: (view: EditorView) => {
+				const { selection, doc } = view.state;
+				const has = doc.rangeHasMark(
+					selection.from,
+					selection.to,
+					linkSchema.type(ctx),
+				);
+				if (has || selection.empty) return false;
+
+				return true;
+			},
+		});
+
+		content.textContent = "🔗";
+		content.className = "link-insert-button";
+		content.onmousedown = (e: MouseEvent) => {
+			e.preventDefault();
+			const view = ctx.get(editorViewCtx);
+			const { selection } = view.state;
+			ctx.get(linkTooltip.key).addLink(selection.from, selection.to);
+			provider.hide();
+		};
+
+		return {
+			update: (updatedView: EditorView, prevState: EditorState) => {
+				if (ctx.get(linkTooltipState.key).mode === "edit") return;
+				provider.update(updatedView, prevState);
+			},
+			destroy: () => {
+				provider.destroy();
+				content.remove();
+			},
+		};
+	};
+}
 
 const BaseMilkdownEditor = forwardRef(
 	({ onChange, placeholder, defaultValue }: MilkdownEditorProps, ref) => {
@@ -120,6 +169,10 @@ const BaseMilkdownEditor = forwardRef(
 						}));
 
 						ctx.set(placeholderCtx, placeholder ? placeholder : "");
+
+						ctx.set(linkTooltip.key, {
+							view: tooltipPluginView(ctx),
+						});
 					})
 					.config(nord)
 					.use(clipboard)
@@ -130,7 +183,8 @@ const BaseMilkdownEditor = forwardRef(
 					.use(commonmark)
 					.use(indent)
 					.use(upload)
-					.use(cursor),
+					.use(cursor)
+					.use(linkTooltip),
 			[],
 		);
 

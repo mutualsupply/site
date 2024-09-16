@@ -58,6 +58,9 @@ importers:
       '@milkdown/plugin-listener':
         specifier: ^7.2.4
         version: 7.3.2(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
+      '@milkdown/plugin-tooltip':
+        specifier: ^7.3.3
+        version: 7.3.3(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
       '@milkdown/plugin-upload':
         specifier: ^7.2.4
         version: 7.3.2(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
@@ -2508,6 +2511,12 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@milkdown/exception@7.3.3:
+    resolution: {integrity: sha512-q6S9P5yux23BPy5/GK81OslQuVWD+PrNljb1asv10TTscZAyZmgCMvECQrR3qrwd/Ja5JN5C2CcYLe1JgzI1Fg==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
+
   /@milkdown/plugin-clipboard@7.3.2(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2):
     resolution: {integrity: sha512-/xWhGI5wWMsZhRnN1/CKz9QOlrGz2d+xpGWbFjSooB3SzMULBxoauz+8rrNni6E2I7TqJTfm/8gwtuo1ycpdKg==}
     peerDependencies:
@@ -2607,6 +2616,26 @@ packages:
       '@milkdown/utils': 7.3.2(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
       '@types/lodash.debounce': 4.0.9
       lodash.debounce: 4.0.8
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - '@milkdown/transformer'
+    dev: false
+
+  /@milkdown/plugin-tooltip@7.3.3(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2):
+    resolution: {integrity: sha512-RgmEAhh0Y2hx3I94A8+A0iQY8zyGAlaaHnOxvXg+LRiHr8MJ8WxY87+yYW827PBdKjbquGumlo71yTRJXox74w==}
+    peerDependencies:
+      '@milkdown/core': ^7.2.0
+      '@milkdown/ctx': ^7.2.0
+      '@milkdown/prose': ^7.2.0
+    dependencies:
+      '@milkdown/core': 7.3.2(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
+      '@milkdown/ctx': 7.3.2
+      '@milkdown/exception': 7.3.3
+      '@milkdown/prose': 7.3.2
+      '@milkdown/utils': 7.3.3(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
+      '@types/lodash.debounce': 4.0.9
+      lodash.debounce: 4.0.8
+      tippy.js: 6.3.7
       tslib: 2.6.2
     transitivePeerDependencies:
       - '@milkdown/transformer'
@@ -2729,6 +2758,23 @@ packages:
       '@milkdown/core': 7.3.2(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
       '@milkdown/ctx': 7.3.2
       '@milkdown/exception': 7.3.2
+      '@milkdown/prose': 7.3.2
+      '@milkdown/transformer': 7.3.2(@milkdown/prose@7.3.2)
+      nanoid: 5.0.4
+      tslib: 2.6.2
+    dev: false
+
+  /@milkdown/utils@7.3.3(@milkdown/core@7.3.2)(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2):
+    resolution: {integrity: sha512-PwM43+YLuvS+RUaiFWZPS6vBxGcEp9nUY2U0h00FHRJjbTSriDHcnTgpkRX5u2JKBaWaRCDTFGjVmfJI6q6LGA==}
+    peerDependencies:
+      '@milkdown/core': ^7.2.0
+      '@milkdown/ctx': ^7.2.0
+      '@milkdown/prose': ^7.2.0
+      '@milkdown/transformer': ^7.2.0
+    dependencies:
+      '@milkdown/core': 7.3.2(@milkdown/ctx@7.3.2)(@milkdown/prose@7.3.2)(@milkdown/transformer@7.3.2)
+      '@milkdown/ctx': 7.3.2
+      '@milkdown/exception': 7.3.3
       '@milkdown/prose': 7.3.2
       '@milkdown/transformer': 7.3.2(@milkdown/prose@7.3.2)
       nanoid: 5.0.4
@@ -3360,6 +3406,10 @@ packages:
 
   /@pedrouid/environment@1.0.1:
     resolution: {integrity: sha512-HaW78NszGzRZd9SeoI3JD11JqY+lubnaOx7Pewj5pfjqWXOEATpeKIFb9Z4t2WBUK2iryiXX3lzWwmYWgUL0Ug==}
+    dev: false
+
+  /@popperjs/core@2.11.8:
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
   /@prisma/client@5.7.0(prisma@5.2.0-dev.71):
@@ -11687,6 +11737,12 @@ packages:
 
   /tinycolor2@1.6.0:
     resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
+    dev: false
+
+  /tippy.js@6.3.7:
+    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
+    dependencies:
+      '@popperjs/core': 2.11.8
     dev: false
 
   /to-fast-properties@2.0.0:
